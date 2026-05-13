@@ -29,6 +29,13 @@ Edits text to remove patterns that mark it as AI-generated: inflated symbolism, 
 
 - **Triggers:** "humanize this", "make this sound less like AI", "remove AI tells from this draft"
 
+### [`seo-audit`](./seo-audit/) — Comprehensive SEO site audit
+
+Runs a structured SEO audit across six categories: indexing (robots.txt, sitemap, canonicals), on-page (titles, meta, headings, alt text), technical (Core Web Vitals, HTTPS, redirects), schema/structured data, content quality, and security headers. Each category gets a /10 score and a prioritized list of fixes. Output is a markdown report saved to `_claude-output/seo-audit-[domain]-[date].md`.
+
+- **Triggers:** "seo audit", "seo review", "check seo", "site audit", "search optimization"
+- **Beyond auditing:** also handles keyword research guidance, on-page optimization, internal linking strategy, meta tag rewrites, and content gap analysis
+
 ## Installation
 
 Clone the repo and run the install script:
