@@ -36,6 +36,21 @@ Runs a structured SEO audit across six categories: indexing (robots.txt, sitemap
 - **Triggers:** "seo audit", "seo review", "check seo", "site audit", "search optimization"
 - **Beyond auditing:** also handles keyword research guidance, on-page optimization, internal linking strategy, meta tag rewrites, and content gap analysis
 
+### [`roast`](./roast/) — Pressure-test an idea before you build it
+
+Claude's default is to agree with you; /roast is the opposite. It convenes a council of five adversarial persona agents (run in parallel) who tear an idea apart and rebuild it from every angle — market, money, execution, and more — then a Judge agent synthesizes everything into one honest verdict. Use it before you sink time and money into building the wrong thing.
+
+- **Triggers:** "/roast \<idea\>", "roast this idea", "pressure-test this", "convene the council", "validate this business idea"
+- **Requirements:** none — self-contained, uses only built-in Claude Code agents
+
+### [`storm-research`](./storm-research/) — Multi-perspective, citation-verified research briefings
+
+Turns one topic into a verified HTML briefing using a STORM-style pipeline: five expert lenses research the topic in parallel, contradictions between them get mapped, everything is synthesized into a single self-contained HTML report, then the output is adversarially peer-reviewed and every citation is verified against its primary source before delivery. Heavier than a quick lookup — that's the point.
+
+- **Triggers:** "storm research this", "storm report on X", "give me a STORM briefing on X"
+- **Requirements:** none — self-contained, uses built-in agents plus the bundled `report-template.html`
+- **Best for:** topics where multiple viewpoints and fact-checked claims matter; overkill for a simple factual lookup
+
 ## Installation
 
 Clone the repo and run the install script:
@@ -55,7 +70,7 @@ The script symlinks each skill directory into `~/.claude/skills/<name>/`. It's i
 To uninstall, remove the symlinks:
 
 ```bash
-rm ~/.claude/skills/watch ~/.claude/skills/ai-text-detector ~/.claude/skills/humanizer
+rm ~/.claude/skills/watch ~/.claude/skills/ai-text-detector ~/.claude/skills/humanizer ~/.claude/skills/seo-audit ~/.claude/skills/roast ~/.claude/skills/storm-research
 ```
 
 ## How skills work in Claude Code
