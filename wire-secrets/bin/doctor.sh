@@ -16,44 +16,48 @@ tmp="$(mktemp)"
 record() { printf '%s\t%s\t%s\t%s\n' "$1" "$2" "$3" "$(now)" >> "$tmp"; }
 
 http() { curl -s -m 25 -o /dev/null -w '%{http_code}' "$@"; }
+# Keys never go in argv (visible to `ps`): headers are passed with  -H @<(...)  and URLs that
+# embed a key with  --config <(...) , both of which curl reads from a file descriptor.
+hdr() { printf '%s\n' "$1"; }
+cfgurl() { printf 'url = "%s"\n' "$1"; }
 
 probe() {
   local name="$1" check="$2" key detail code
   key="$(get "$name")"; [ -z "$key" ] && { record "$name" skip "no value"; return; }
   case "$check" in
     openrouter)
-      local body; body="$(curl -s -m 25 -H "Authorization: Bearer $key" https://openrouter.ai/api/v1/key)"
+      local body; body="$(curl -s -m 25 -H @<(hdr "Authorization: Bearer $key") https://openrouter.ai/api/v1/key)"
       if grep -q '"usage"' <<<"$body"; then
         local u l; u=$(sed -n 's/.*"usage":\([0-9.]*\).*/\1/p'<<<"$body"); l=$(sed -n 's/.*"limit_remaining":\([0-9.]*\).*/\1/p'<<<"$body")
         record "$name" live "\$${l:-?} left (used \$${u:-?})"
       else record "$name" dead "401/invalid"; fi ;;
     elevenlabs)
-      code="$(http -H "xi-api-key: $key" https://api.elevenlabs.io/v1/voices)"
+      code="$(http -H @<(hdr "xi-api-key: $key") https://api.elevenlabs.io/v1/voices)"
       [ "$code" = 200 ] && record "$name" live "voices reachable" || record "$name" dead "HTTP $code" ;;
     resend)
-      code="$(http -H "Authorization: Bearer $key" https://api.resend.com/domains)"
+      code="$(http -H @<(hdr "Authorization: Bearer $key") https://api.resend.com/domains)"
       [ "$code" = 200 ] && record "$name" live "domains reachable" || record "$name" dead "HTTP $code" ;;
     firecrawl)
-      local body; body="$(curl -s -m 25 -H "Authorization: Bearer $key" https://api.firecrawl.dev/v1/team/credit-usage)"
+      local body; body="$(curl -s -m 25 -H @<(hdr "Authorization: Bearer $key") https://api.firecrawl.dev/v1/team/credit-usage)"
       if grep -q remaining_credits <<<"$body"; then
         record "$name" live "$(sed -n 's/.*"remaining_credits":\([0-9]*\).*/\1 credits/p'<<<"$body")"
       else record "$name" dead "auth failed"; fi ;;
     perplexity)
       code="$(curl -s -m 25 -o /dev/null -w '%{http_code}' -X POST https://api.perplexity.ai/chat/completions \
-        -H "Authorization: Bearer $key" -H 'Content-Type: application/json' \
+        -H @<(hdr "Authorization: Bearer $key") -H 'Content-Type: application/json' \
         -d '{"model":"sonar","messages":[{"role":"user","content":"hi"}],"max_tokens":16}')"
       [ "$code" = 200 ] && record "$name" live "chat ok" || record "$name" dead "HTTP $code" ;;
     vercel)
-      code="$(http -H "Authorization: Bearer $key" https://api.vercel.com/v2/user)"
+      code="$(http -H @<(hdr "Authorization: Bearer $key") https://api.vercel.com/v2/user)"
       [ "$code" = 200 ] && record "$name" live "user ok" || record "$name" dead "HTTP $code" ;;
     telegram)
-      grep -q '"ok":true' <<<"$(curl -s -m 25 https://api.telegram.org/bot"$key"/getMe)" \
+      grep -q '"ok":true' <<<"$(curl -s -m 25 --config <(cfgurl "https://api.telegram.org/bot$key/getMe"))" \
         && record "$name" live "getMe ok" || record "$name" dead "invalid token" ;;
     google_pagespeed)
-      code="$(curl -s -m 70 -o /dev/null -w '%{http_code}' "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://example.com&key=$key")"
+      code="$(curl -s -m 70 -o /dev/null -w '%{http_code}' --config <(cfgurl "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://example.com&key=$key"))"
       [ "$code" = 200 ] && record "$name" live "quota ok" || record "$name" dead "HTTP $code" ;;
     google_places)
-      code="$(curl -s -m 25 -o /dev/null -w '%{http_code}' -X POST "https://places.googleapis.com/v1/places:searchText?key=$key" \
+      code="$(curl -s -m 25 -o /dev/null -w '%{http_code}' -X POST --config <(cfgurl "https://places.googleapis.com/v1/places:searchText?key=$key") \
         -H 'Content-Type: application/json' -H 'X-Goog-FieldMask: places.id' -d '{"textQuery":"coffee"}')"
       [ "$code" = 200 ] && record "$name" live "search ok" || record "$name" dead "HTTP $code" ;;
     aws)
