@@ -1,0 +1,10 @@
+{
+  "name": "talking-head-motion-engine",
+  "private": true,
+  "type": "module",
+  "description": "Builds a talking-head + motion-beats HyperFrames composition from a camera take and beats.json.",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "gsap": "3.14.2"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "presenter": {
+    "name": "Your Name",
+    "portrait": null,
+    "face": "50% 38%"
+  },
+  "brand": {
+    "name": "Your Brand",
+    "cta": "example.com",
+    "logo": null,
+    "logoKeyBackground": false,
+    "music": null,
+    "palette": {
+      "background": "#0f1216",
+      "surface": "#171b21",
+      "raised": "#212730",
+      "accent": "#5b9dff",
+      "accentDeep": "#2f6fd1",
+      "warm": "#f2a93b",
+      "success": "#2fbf71",
+      "foreground": "#e6e8eb",
+      "muted": "#9aa3ad",
+      "highlight": "#f5f7fa"
+    },
+    "fonts": {
+      "sans": { "family": null, "file": null, "weight": "100 900" },
+      "mono": { "family": null, "file": null, "weight": "500" }
+    }
+  },
+  "hyperframes": "0.8.168",
+  "kokoro": { "voice": "af_heart", "speed": 0.95 }
+}
