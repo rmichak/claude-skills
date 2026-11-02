@@ -2,6 +2,8 @@
 
 A growing collection of [Claude Code](https://www.anthropic.com/news/claude-code) skills built or adapted by [Randy Michak](https://github.com/rmichak) (adapted skills credit their source below). Each skill is a self-contained directory with a `SKILL.md` (and sometimes supporting scripts or references) that Claude can invoke when its description matches what you're trying to do.
 
+Teaching? Grading and course-review skills for instructors live in a companion repo: [rmichak/instructor-skills](https://github.com/rmichak/instructor-skills).
+
 ## What's a skill?
 
 A skill is a markdown file (`SKILL.md`) — plus optional scripts and reference docs — that tells Claude how to do a specific job well. When you have a skill installed at `~/.claude/skills/<name>/`, Claude Code can discover and invoke it automatically based on the description in its frontmatter. Skills are how you turn "I keep doing this same thing" into "Claude just does this thing now."
@@ -91,6 +93,31 @@ Bundles the `secret` CLI, a small bash tool that keeps API keys in the macOS Key
 
 - **Triggers:** "wire up secrets", "get this project off .env", "push these secrets to Vercel/GitHub/AWS"
 - **Requirements:** macOS (Keychain via `security`). See the one-time install steps in [`wire-secrets/SKILL.md`](./wire-secrets/SKILL.md); start from [`registry.example.toml`](./wire-secrets/registry.example.toml).
+
+### Video skills (built on [HyperFrames](https://github.com/heygen-com/hyperframes))
+
+These three render video from HTML with the HyperFrames CLI. Narration defaults to free, local Kokoro TTS and captions use local Whisper, so nothing goes to a paid API unless you opt in to ElevenLabs with `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`. All three need Node 18+, `ffmpeg`/`ffprobe`, and `npx hyperframes`.
+
+#### [`code-demo-video`](./code-demo-video/) — Coding videos without screen recording
+
+A simulated VS Code window where the code types itself, the terminal shows real output, and a voiceover explains each step. It's built for LMS embeds, YouTube, or splicing into a longer lecture, and includes a lab-walkthrough kit with pause-and-try cards.
+
+- **Triggers:** "code demo video", "typing demo video", "lab walkthrough video", "make a video showing this code"
+- **Requirements:** macOS (the window uses your Mac's own SF and Menlo fonts, copied in at build time and never bundled). Third-party asset licenses are listed in the skill.
+
+#### [`talking-head-motion`](./talking-head-motion/) — On-camera video cut against motion graphics
+
+Takes a talking-head recording, transcribes it, and writes a `beats.json` that drops branded motion graphics onto the words you say: text pops, chapter cards, numbered tiles, stat cards, verdict buttons, and screenshots with your face in a corner circle. The engine is bundled; your name, brand colors, fonts, logo and music go in `engine/config.json` (start from `config.example.json`).
+
+- **Triggers:** "talking head with animations", "motion beats", "animate my intro", "beats.json"
+- **Requirements:** optional macOS Xcode command-line tools for face tracking and green-screen-free background swaps. GSAP is fetched on first build (not bundled).
+
+#### [`course-video`](./course-video/) — Branded, captioned course videos
+
+Two modes: (A) enhance a screen recording with a title card, word-by-word captions, fly-in notes and code highlights, or (B) build a narrated lecture from a slide deck plus per-slide `voiceover.md`. Palette, fonts and pronunciation respellings come from a brand folder; `example-brand/` is included as a starting point.
+
+- **Triggers:** "make a lecture video from these slides", "narrate this module", "add captions and notes to this recording"
+- **Requirements:** see above; point `--brand` (or `COURSE_VIDEO_BRAND`) at your own brand folder.
 
 ## Installation
 
