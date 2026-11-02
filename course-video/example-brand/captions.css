@@ -1,0 +1,13 @@
+/* Word-by-word captions: a drop-in for HyperFrames compositions (the Mode A template has the same rules inline).
+   White text on a semi-opaque black box; .hl marks an emphasized keyword in the brand's screen-bright accent.
+   Load the brand fonts first (Inter here), e.g. self-hosted .woff2 files in the build's fonts/ folder. */
+#cap-layer { position: absolute; left: 0; right: 0; bottom: 74px; height: 220px; z-index: 30; }
+.cap-group { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; opacity: 0; visibility: hidden; }
+.cap-box {
+  display: inline-block; max-width: 1500px; padding: 12px 26px;
+  background: rgba(0, 0, 0, 0.80); border-radius: 8px; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
+  color: #ffffff; font-family: Inter, "Helvetica Neue", Arial, sans-serif; font-weight: 600;
+  font-size: 50px; line-height: 1.3; text-align: left;
+}
+.cap-word { opacity: 0; }
+.cap-word.hl { color: #60a5fa; }   /* keyword emphasis: brand accent, screen-bright */

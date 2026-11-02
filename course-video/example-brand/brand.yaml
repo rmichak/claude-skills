@@ -1,0 +1,118 @@
+# Example College — a neutral example brand for the course-video skill.
+# This is a human-readable mirror of brand.json. The engine reads brand.json only, so keep the two in sync
+# (or delete this file). Copy the whole folder, rename it, and point the skill at it:
+#   COURSE_VIDEO_BRAND=/path/to/my-brand      (or engine/build-module.sh --brand /path/to/my-brand)
+id: example-college
+status: example
+
+brand:
+  name: Example College
+  url: example.edu
+
+colors:                   # print tokens (handouts, slide decks)
+  ink:        "#111827"   # body text, slide titles
+  body:       "#4b5563"
+  muted:      "#9ca3af"
+  paper:      "#ffffff"
+  paper2:     "#eef2f7"
+  rule:       "#e5e7eb"
+  dark:       "#1e293b"
+  dark2:      "#334155"
+  dark3:      "#0f172a"   # code background
+  onDark:     "#ffffff"
+  onDarkDim:  "#e2e8f0"
+  accent:     "#3b82f6"
+  accentInk:  "#1d4ed8"
+  accentDeep: "#1e3a8a"
+  accentTint: "#eff6ff"
+  highlight:  "#3b82f6"
+  red:        "#c2282d"   # caveats
+
+fonts:
+  display: { family: Inter, google: Inter, weights: [400, 600, 700, 800], stack: "'Helvetica Neue', Arial, sans-serif" }
+  mono:    { family: JetBrains Mono, google: JetBrains Mono, weights: [400, 700], stack: "Menlo, Consolas, monospace" }
+
+assets:                   # no logo in the example (see LOGO.md)
+  lockup_light: null
+  lockup_dark:  null
+
+voice:
+  person: second
+  rules:
+    - Teach one idea at a time, in the order the module introduces it.
+    - Say what the student will be able to do, then show it.
+  avoid:
+    - concepts the module has not taught yet (no lookahead in labs)
+
+video:
+  identity:
+    name: Example College
+    handle: null
+    channel_id: null
+    channel_url: null
+  # Dark video canvas. Mode A's title card / note panels and Mode B's highlights + caption box read these.
+  palette:
+    primary: "#334155"          # title gradient top
+    primary_dark: "#1e293b"     # gradient bottom, panels
+    primary_on_dark: "#94a3b8"
+    accent: "#3b82f6"           # borders, code highlight ("look here")
+    accent_bright: "#60a5fa"    # kickers, note titles, bullets
+    canvas: "#0f172a"           # note-panel and caption-box background
+    text: "#ffffff"
+    term_green: "#67e8f9"       # terminal/mono accent (key name kept for schema compatibility)
+  code_theme:
+    bg: "#0f172a"
+    accentA: "#60a5fa"
+    accentB: "#a78bfa"
+    inkMeta: "#94a3b8"
+    glowA: "rgba(59, 130, 246, 0.35)"
+    glowA0: "rgba(59, 130, 246, 0)"
+    glowB: "rgba(167, 139, 250, 0.15)"
+    glowB0: "rgba(167, 139, 250, 0)"
+  fonts:
+    display: Inter
+    body: Inter
+    code: JetBrains Mono
+    files: fonts/
+  logo: null
+  emblem: null
+  voice:
+    draft: { engine: kokoro, voice: af_heart, speed: 0.95 }
+    final:
+      engine: elevenlabs
+      voice_id: null                       # never stored here: export ELEVENLABS_VOICE_ID
+      voice_id_env: ELEVENLABS_VOICE_ID
+      api_key_env: ELEVENLABS_API_KEY
+      model: eleven_turbo_v2_5
+      settings: { stability: 0.5, similarity_boost: 0.75, style: 0.0, use_speaker_boost: true, speed: 0.92 }
+    pronunciations: PRONUNCIATIONS.md
+    respellings:                           # whole-word extras applied by build-narration.mjs
+      kokoro: { GUI: gooey }
+      eleven: {}
+    disclosure: "Narration uses an AI voice."
+  captions:
+    burned: false
+    style: word-by-word
+    font: Inter
+    weight: 600
+    size_px: 50
+    color: "#ffffff"
+    box: "rgba(0, 0, 0, 0.80)"
+    highlight: "#60a5fa"
+  kit:
+    title_card: null
+    lower_third: null
+    captions_css: captions.css
+  loudness_lufs: -14
+  destination:
+    platform: youtube
+    visibility: unlisted
+    channel_id: null
+    record_in: "VIDEOS.md in the course repo"
+  guardrails:
+    - No student names, IDs or grades on screen (FERPA).
+    - Code shown on screen runs for real first.
+    - Labs only use concepts the module has taught so far (no lookahead).
+    - Keep each project's script.md frozen to what was rendered; the course voiceover.md moves on.
+  paid_tools:
+    elevenlabs: finals only, after the script is locked
