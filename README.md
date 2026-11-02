@@ -54,6 +54,44 @@ Turns one topic into a verified HTML briefing using a STORM-style pipeline: five
 - **Best for:** topics where multiple viewpoints and fact-checked claims matter; overkill for a simple factual lookup
 - **Credit:** The multi-perspective approach is inspired by [STORM](https://github.com/stanford-oval/storm) from Stanford OVAL. This skill is an independent Claude Code take on the idea and contains no STORM code.
 
+### [`security-scanner`](./security-scanner/) — Authorized security scans with structured reports
+
+Walks through port scanning, vulnerability detection, SSL/TLS analysis, web-app checks, and DNS reconnaissance against a target you're authorized to test, then writes up findings with severity ratings. Before any scan it confirms that you own or have written authorization for the target and that the scope is defined.
+
+- **Triggers:** "security scan", "vulnerability scan", "pentest", "security audit on \<target\>"
+- **Requirements:** `nmap`, `curl`, `openssl`; optionally `testssl.sh`, `sslscan`, `nuclei`. Only scan systems you own or have written permission to test.
+
+### [`sonarqube-triage`](./sonarqube-triage/) — Triage SonarQube findings before "fixing" them
+
+Makes Claude read the flagged code in context and state whether it agrees with each SonarQube finding before touching anything. Real problems get fixed; false positives and fixes that wouldn't improve the code get dismissed with a written justification, so you don't refactor working code just to silence a rule.
+
+- **Triggers:** pasting SonarQube issues, "fix these Sonar findings", "triage this scan"
+
+### [`update-docs`](./update-docs/) — Keep README.md and CLAUDE.md in sync with the code
+
+Updates a project's README and CLAUDE.md when its functionality changes: new routes, components, schema changes, or features added or removed. It can also act as a "what does this app do" reader.
+
+- **Triggers:** "update docs", "/update-docs", or proactively after API/schema/feature changes
+
+### [`technical-review`](./technical-review/) — Accuracy review for technical and teaching content
+
+Reviews tutorials, course material, blog posts, and docs for technical accuracy and currency. It checks version numbers, API syntax, security advisories, and whether each explanation is clear, and grades every issue by severity.
+
+- **Triggers:** "review this", "check accuracy", "technical review", "fact check"
+
+### [`react-router-reviewer`](./react-router-reviewer/) — Expert persona for React / React Router content
+
+A senior frontend engineer persona who reviews React 18+ and React Router v6/v7 tutorials and docs. It catches invented APIs, deprecated patterns taught as current, and code that won't compile, and it quotes the exact line along with the fix.
+
+- **Triggers:** reviewing React or React Router tutorial/documentation content
+
+### [`wire-secrets`](./wire-secrets/) — One Keychain vault for every project's API keys
+
+Bundles the `secret` CLI, a small bash tool that keeps API keys in the macOS Keychain instead of `.env` files. It scaffolds a committable `.secrets.map` (var → vault name) from a project's `.env`, reuses keys you already have instead of minting new ones, injects them at runtime with `secret run -- <cmd>`, probes key health with `secret doctor`, and pushes to GitHub, Vercel, or AWS Secrets Manager (dry-run first).
+
+- **Triggers:** "wire up secrets", "get this project off .env", "push these secrets to Vercel/GitHub/AWS"
+- **Requirements:** macOS (Keychain via `security`). See the one-time install steps in [`wire-secrets/SKILL.md`](./wire-secrets/SKILL.md); start from [`registry.example.toml`](./wire-secrets/registry.example.toml).
+
 ## Installation
 
 Clone the repo and run the install script:
@@ -64,16 +102,16 @@ cd claude-skills
 ./install.sh
 ```
 
-The script symlinks each skill directory into `~/.claude/skills/<name>/`. It's idempotent (re-running is safe) and refuses to overwrite a real directory at the destination — it'll only replace existing symlinks. To install just one skill:
+The script symlinks each skill directory into `~/.claude/skills/<name>/`. It's idempotent (re-running is safe), refuses to overwrite a real directory at the destination, and leaves alone any symlink that points somewhere other than this repo (your own customized copy) unless you pass `--force`. To install just one skill:
 
 ```bash
 ./install.sh watch
 ```
 
-To uninstall, remove the symlinks:
+To uninstall, remove the symlinks that point into this repo:
 
 ```bash
-rm ~/.claude/skills/watch ~/.claude/skills/ai-text-detector ~/.claude/skills/humanizer ~/.claude/skills/seo-audit ~/.claude/skills/roast ~/.claude/skills/storm-research
+for d in */; do l=~/.claude/skills/${d%/}; [ -L "$l" ] && [ "$(readlink "$l")" = "$PWD/${d%/}" ] && rm "$l"; done
 ```
 
 ## How skills work in Claude Code

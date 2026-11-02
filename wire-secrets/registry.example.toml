@@ -1,0 +1,44 @@
+# claude-secrets registry — NON-SECRET metadata only. Safe to sync / commit.
+# The actual key values live in the macOS Keychain (service "claude-secret:<name>").
+# Copy this file to ~/.config/claude-secrets/registry.toml and add one table per service.
+#
+# One [<name>] table per service. Fields:
+#   vendor       human label
+#   create_url   where to make/find a key  (shown by `secret ensure` before you make a new one)
+#   scope        "shared" | "per-project"
+#   projects     which repos consume it (comma-separated, informational)
+#   check        health-probe id used by doctor.sh (empty = no automated probe)
+#                built-in probes: openrouter, elevenlabs, resend, firecrawl, perplexity,
+#                vercel, telegram, google_pagespeed, google_places, aws
+#
+# Optional rotation reminders (shown by `secret rotations`):
+#   rotate_reason  why it should be rotated
+#   rotate_prio    high | medium | low
+#   rotate_flagged date you flagged it
+
+# ============================ SHARED (one key, many projects) ================
+
+[resend]
+vendor     = "Resend"
+create_url = "https://resend.com/api-keys"
+scope      = "shared"
+projects   = "my-site, my-newsletter"
+check      = "resend"
+
+# ============================ PER-PROJECT ====================================
+
+[openrouter/my-app]
+vendor     = "OpenRouter"
+create_url = "https://openrouter.ai/settings/keys"
+scope      = "per-project"
+projects   = "my-app"
+check      = "openrouter"
+
+# AWS pairs are stored as one "ACCESS_KEY_ID:SECRET_ACCESS_KEY" blob and split in
+# .secrets.map with  AWS_ACCESS_KEY_ID = aws/my-app|id  /  AWS_SECRET_ACCESS_KEY = aws/my-app|secret
+[aws/my-app]
+vendor     = "AWS IAM"
+create_url = "https://console.aws.amazon.com/iam/home#/users"
+scope      = "per-project"
+projects   = "my-app"
+check      = "aws"

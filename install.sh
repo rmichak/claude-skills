@@ -8,7 +8,9 @@
 #
 # Behavior:
 #   - Idempotent: re-running is safe.
-#   - If ~/.claude/skills/<name> is already a symlink, it gets replaced.
+#   - If ~/.claude/skills/<name> is a symlink into THIS repo, it's left alone.
+#   - If it's a symlink pointing somewhere else (your own customized copy), the
+#     script refuses to replace it unless you pass --force.
 #   - If ~/.claude/skills/<name> is a real directory (not a symlink), the script
 #     refuses to touch it and prints a warning. You decide what to do.
 #   - Creates ~/.claude/skills/ if it doesn't exist.
@@ -29,9 +31,16 @@ for d in "$REPO_DIR"/*/; do
   fi
 done
 
+# --force replaces symlinks that point outside this repo.
+force=0
+args=()
+for a in "$@"; do
+  if [[ "$a" == "--force" ]]; then force=1; else args+=("$a"); fi
+done
+
 # Pick which skills to install: args override, otherwise install all.
-if [[ $# -gt 0 ]]; then
-  targets=("$@")
+if [[ ${#args[@]} -gt 0 ]]; then
+  targets=("${args[@]}")
 else
   targets=("${all_skills[@]}")
 fi
@@ -55,6 +64,12 @@ for name in "${targets[@]}"; do
     if [[ "$current" == "$src" ]]; then
       echo "  ok:   $name (already linked)"
       installed=$((installed + 1))
+      continue
+    fi
+    if [[ "$force" != 1 ]]; then
+      echo "  WARN: $name is a symlink to $current (not this repo). Leaving it alone." >&2
+      echo "        Re-run with --force to replace it with this repo's version." >&2
+      skipped=$((skipped + 1))
       continue
     fi
     rm "$dest"
