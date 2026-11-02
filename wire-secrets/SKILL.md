@@ -47,6 +47,12 @@ Set `CLAUDE_SECRETS_DIR` to use a different config folder. Run `secret help` for
    ```bash
    secret run -- <the project's dev/build command>
    ```
+   Maps written by `secret init` are trusted automatically. Any other `.secrets.map` (one
+   that came with a cloned repo, or one edited since you approved it) is refused until you
+   review the vault names it requests and run `secret approve` (it prompts on a terminal;
+   `--yes` for non-interactive use). **Show the user the requested names before approving
+   on their behalf** — a map can ask for any entry in the vault and hand it to the repo's
+   scripts.
    Exception: Vite/Next auto-load `.env` themselves — for those, generate it from the vault
    with `secret env > .env` (keep `.env` gitignored).
 

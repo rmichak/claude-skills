@@ -87,7 +87,7 @@ A senior frontend engineer persona who reviews React 18+ and React Router v6/v7 
 
 ### [`wire-secrets`](./wire-secrets/) — One Keychain vault for every project's API keys
 
-Bundles the `secret` CLI, a small bash tool that keeps API keys in the macOS Keychain instead of `.env` files. It scaffolds a committable `.secrets.map` (var → vault name) from a project's `.env`, reuses keys you already have instead of minting new ones, injects them at runtime with `secret run -- <cmd>`, probes key health with `secret doctor`, and pushes to GitHub, Vercel, or AWS Secrets Manager (dry-run first).
+Bundles the `secret` CLI, a small bash tool that keeps API keys in the macOS Keychain instead of `.env` files. It scaffolds a committable `.secrets.map` (var → vault name) from a project's `.env`, reuses keys you already have instead of minting new ones, injects them at runtime with `secret run -- <cmd>` (a map you didn't generate must be approved first, so a cloned repo can't quietly read your other keys), probes key health with `secret doctor`, and pushes to GitHub, Vercel, or AWS Secrets Manager (dry-run first).
 
 - **Triggers:** "wire up secrets", "get this project off .env", "push these secrets to Vercel/GitHub/AWS"
 - **Requirements:** macOS (Keychain via `security`). See the one-time install steps in [`wire-secrets/SKILL.md`](./wire-secrets/SKILL.md); start from [`registry.example.toml`](./wire-secrets/registry.example.toml).
