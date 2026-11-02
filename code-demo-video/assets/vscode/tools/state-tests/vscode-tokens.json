@@ -1,0 +1,978 @@
+{
+ "port_check.py": {
+  "# port_check.py - classify a network port": [
+   [
+    "c-8b949e",
+    "# port_check.py - classify a network port"
+   ]
+  ],
+  "# Sample course - VS Code pixel test": [
+   [
+    "c-8b949e",
+    "# Sample course - VS Code pixel test"
+   ]
+  ],
+  "": [
+   [
+    "",
+    ""
+   ]
+  ],
+  "def classify_port(port):": [
+   [
+    "c-ff7b72",
+    "def"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d2a8ff",
+    "classify_port"
+   ],
+   [
+    "c-ffd700",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-ffa657",
+    "port"
+   ],
+   [
+    "c-ffd700",
+    ")",
+    "bbbebf"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "    if 0 <= port <= 1023:": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c586c0",
+    "if"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "0"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "<="
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-ffa657",
+    "port"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "<="
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "1023"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "        return \"well-known\"": [
+   [
+    "",
+    "        "
+   ],
+   [
+    "c-c586c0",
+    "return"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-a5d6ff",
+    "\"well-known\""
+   ]
+  ],
+  "    elif port <= 49151:": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c586c0",
+    "elif"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-ffa657",
+    "port"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "<="
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "49151"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "        return \"registered\"": [
+   [
+    "",
+    "        "
+   ],
+   [
+    "c-c586c0",
+    "return"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-a5d6ff",
+    "\"registered\""
+   ]
+  ],
+  "    return \"dynamic\"": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c586c0",
+    "return"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-a5d6ff",
+    "\"dynamic\""
+   ]
+  ],
+  "print(f\"Port 443 is {classify_port(443)}\")": [
+   [
+    "c-d2a8ff",
+    "print"
+   ],
+   [
+    "c-ffd700",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-ff7b72",
+    "f"
+   ],
+   [
+    "c-a5d6ff",
+    "\"Port 443 is "
+   ],
+   [
+    "c-da70d6",
+    "{",
+    "ff7b72"
+   ],
+   [
+    "c-d2a8ff",
+    "classify_port"
+   ],
+   [
+    "c-179fff",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-b5cea8",
+    "443"
+   ],
+   [
+    "c-179fff",
+    ")",
+    "bbbebf"
+   ],
+   [
+    "c-da70d6",
+    "}",
+    "ff7b72"
+   ],
+   [
+    "c-a5d6ff",
+    "\""
+   ],
+   [
+    "c-ffd700",
+    ")",
+    "bbbebf"
+   ]
+  ]
+ },
+ "hello_port.py": {
+  "port = 443": [
+   [
+    "c-c9d1d9",
+    "port"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "="
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "443"
+   ]
+  ],
+  "if port <= 1023:": [
+   [
+    "c-c586c0",
+    "if"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-c9d1d9",
+    "port"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "<="
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "1023"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "    print(f\"Port {port} is well-known\")": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-d2a8ff",
+    "print"
+   ],
+   [
+    "c-ffd700",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-ff7b72",
+    "f"
+   ],
+   [
+    "c-a5d6ff",
+    "\"Port "
+   ],
+   [
+    "c-da70d6",
+    "{",
+    "ff7b72"
+   ],
+   [
+    "c-c9d1d9",
+    "port"
+   ],
+   [
+    "c-da70d6",
+    "}",
+    "ff7b72"
+   ],
+   [
+    "c-a5d6ff",
+    " is well-known\""
+   ],
+   [
+    "c-ffd700",
+    ")",
+    "bbbebf"
+   ]
+  ]
+ },
+ "bmi.py": {
+  "# bmi.py - body mass index calculator": [
+   [
+    "c-8b949e",
+    "# bmi.py - body mass index calculator"
+   ]
+  ],
+  "# Sample project: a bigger program": [
+   [
+    "c-8b949e",
+    "# Sample project: a bigger program"
+   ]
+  ],
+  "": [
+   [
+    "",
+    ""
+   ]
+  ],
+  "def bmi(weight_kg, height_m):": [
+   [
+    "c-ff7b72",
+    "def"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d2a8ff",
+    "bmi"
+   ],
+   [
+    "c-ffd700",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-ffa657",
+    "weight_kg"
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-ffa657",
+    "height_m"
+   ],
+   [
+    "c-ffd700",
+    ")",
+    "bbbebf"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "    return weight_kg / height_m ** 2": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c586c0",
+    "return"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-ffa657",
+    "weight_kg"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "/"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-ffa657",
+    "height_m"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "**"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "2"
+   ]
+  ],
+  "def category(value):": [
+   [
+    "c-ff7b72",
+    "def"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d2a8ff",
+    "category"
+   ],
+   [
+    "c-ffd700",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-ffa657",
+    "value"
+   ],
+   [
+    "c-ffd700",
+    ")",
+    "bbbebf"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "    if value < 18.5:": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c586c0",
+    "if"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-ffa657",
+    "value"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "<"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "18.5"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "        return \"underweight\"": [
+   [
+    "",
+    "        "
+   ],
+   [
+    "c-c586c0",
+    "return"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-a5d6ff",
+    "\"underweight\""
+   ]
+  ],
+  "    elif value < 25:": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c586c0",
+    "elif"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-ffa657",
+    "value"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "<"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "25"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "        return \"healthy\"": [
+   [
+    "",
+    "        "
+   ],
+   [
+    "c-c586c0",
+    "return"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-a5d6ff",
+    "\"healthy\""
+   ]
+  ],
+  "    elif value < 30:": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c586c0",
+    "elif"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-ffa657",
+    "value"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "<"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-b5cea8",
+    "30"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "        return \"overweight\"": [
+   [
+    "",
+    "        "
+   ],
+   [
+    "c-c586c0",
+    "return"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-a5d6ff",
+    "\"overweight\""
+   ]
+  ],
+  "    return \"obese\"": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c586c0",
+    "return"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-a5d6ff",
+    "\"obese\""
+   ]
+  ],
+  "people = [(\"Ana\", 58, 1.65), (\"Ben\", 92, 1.80)]": [
+   [
+    "c-c9d1d9",
+    "people"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "="
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-ffd700",
+    "[",
+    "bbbebf"
+   ],
+   [
+    "c-da70d6",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-a5d6ff",
+    "\"Ana\""
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-b5cea8",
+    "58"
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-b5cea8",
+    "1.65"
+   ],
+   [
+    "c-da70d6",
+    ")",
+    "bbbebf"
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-da70d6",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-a5d6ff",
+    "\"Ben\""
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-b5cea8",
+    "92"
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-b5cea8",
+    "1.80"
+   ],
+   [
+    "c-da70d6",
+    ")",
+    "bbbebf"
+   ],
+   [
+    "c-ffd700",
+    "]",
+    "bbbebf"
+   ]
+  ],
+  "for name, kg, m in people:": [
+   [
+    "c-c586c0",
+    "for"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-c9d1d9",
+    "name"
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-c9d1d9",
+    "kg"
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-c9d1d9",
+    "m"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-c586c0",
+    "in"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-c9d1d9",
+    "people"
+   ],
+   [
+    "",
+    ":"
+   ]
+  ],
+  "    score = bmi(kg, m)": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-c9d1d9",
+    "score"
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d4d4d4",
+    "="
+   ],
+   [
+    "",
+    " "
+   ],
+   [
+    "c-d2a8ff",
+    "bmi"
+   ],
+   [
+    "c-ffd700",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-c9d1d9",
+    "kg"
+   ],
+   [
+    "",
+    ", "
+   ],
+   [
+    "c-c9d1d9",
+    "m"
+   ],
+   [
+    "c-ffd700",
+    ")",
+    "bbbebf"
+   ]
+  ],
+  "    print(f\"{name}: BMI {score:.1f} ({category(score)})\")": [
+   [
+    "",
+    "    "
+   ],
+   [
+    "c-d2a8ff",
+    "print"
+   ],
+   [
+    "c-ffd700",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-ff7b72",
+    "f"
+   ],
+   [
+    "c-a5d6ff",
+    "\""
+   ],
+   [
+    "c-da70d6",
+    "{",
+    "ff7b72"
+   ],
+   [
+    "c-c9d1d9",
+    "name"
+   ],
+   [
+    "c-da70d6",
+    "}",
+    "ff7b72"
+   ],
+   [
+    "c-a5d6ff",
+    ": BMI "
+   ],
+   [
+    "c-da70d6",
+    "{",
+    "ff7b72"
+   ],
+   [
+    "c-c9d1d9",
+    "score"
+   ],
+   [
+    "c-ff7b72",
+    ":.1f"
+   ],
+   [
+    "c-da70d6",
+    "}",
+    "ff7b72"
+   ],
+   [
+    "c-a5d6ff",
+    " ("
+   ],
+   [
+    "c-da70d6",
+    "{",
+    "ff7b72"
+   ],
+   [
+    "c-d2a8ff",
+    "category"
+   ],
+   [
+    "c-179fff",
+    "(",
+    "bbbebf"
+   ],
+   [
+    "c-c9d1d9",
+    "score"
+   ],
+   [
+    "c-179fff",
+    ")",
+    "bbbebf"
+   ],
+   [
+    "c-da70d6",
+    "}",
+    "ff7b72"
+   ],
+   [
+    "c-a5d6ff",
+    ")\""
+   ],
+   [
+    "c-ffd700",
+    ")",
+    "bbbebf"
+   ]
+  ]
+ }
+}

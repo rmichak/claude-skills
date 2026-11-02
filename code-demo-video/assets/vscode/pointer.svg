@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 28 40"><!-- original drawing: arrow pointer, hotspot at (5,5) -->
+  <defs><filter id="s" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000" flood-opacity=".35"/></filter></defs>
+  <path d="M5 5 L5 26.5 L10 21.8 L13.4 29.6 L16.6 28.2 L13.3 20.6 L20 20.6 Z" fill="#000" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" filter="url(#s)"/>
+</svg>

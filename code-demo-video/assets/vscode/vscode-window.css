@@ -1,0 +1,246 @@
+/* ===================================================================================================
+   VS Code window: a measured copy of the real app (VS Code 1.138, macOS 26 "Tahoe", theme Dark 2026,
+   editor.fontSize 14, Retina 2x). Every size here is the real app's LOGICAL px; .vsc-z scales the whole
+   window 2x, exactly as a Retina display does, so the output pixels match a real 850x436pt window.
+   Colors are the real theme's --vscode-* variables (vscode/theme-*.css, dumped from the running app).
+   Do not "tune by eye": re-measure (vscode/tools) and re-run the pixel diff instead.
+   =================================================================================================== */
+@font-face { font-family: "codicon"; src: url("vscode/codicon.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "seti"; src: url("vscode/seti.woff") format("woff"); font-display: block; }
+/* the Mac's own UI + editor fonts, copied from /System/Library/Fonts into the project by the build (never
+   shipped in the skill). Named families on purpose: HyperFrames' compiler puts "Inter" in front of a generic
+   primary (-apple-system) and swaps SF Pro/SF Mono/Courier New for web look-alikes. */
+@font-face { font-family: "VSC UI"; src: url("vscode/SFNS.ttf") format("truetype"); font-weight: 1 1000; font-display: block; }
+@font-face { font-family: "VSC Mono"; src: url("vscode/Menlo-Regular.ttf") format("truetype"); font-display: block; }
+
+/* window frame: macOS 26 window, 16pt corner radius, hairline + soft shadow */
+.vsc {
+  /* the sizes that follow editor.fontSize, terminal.integrated.fontSize and the window width, measured per size
+     (vscode-window.mjs: EDITOR_FONT, TERMINAL_FONT, vscGeom). These are the defaults (14 / 14 / 850); the build
+     overrides them with geomCSS() for a smaller font or a wider window. */
+  --vsc-w: 850px; /* window width; .vsc is drawn 2x, centered on the canvas */
+  --vsc-fs: 14px; --vsc-lh: 21px; /* Menlo size / line height */
+  --vsc-gut: 72px; /* glyph margin (= line height) + line numbers + folding 26 */
+  --vsc-glyph-x: 2.5px; /* a 16px glyph-margin icon centered in the glyph margin */
+  --vsc-mm: 62px; /* minimap width (Monaco's proportional share) */
+  --vsc-tfs: 14px; --vsc-trow: 16px; --vsc-tcell: 8.4375px; --vsc-tls: 0.0041px; /* xterm font, row, cell, letter-spacing */
+  --vsc-tmax: 565.3125px; /* xterm's columns x cell (67 x 8.4375) */
+  --vsc-tcur: 8.44px; /* the block cursor */
+  position: absolute; top: 62px; left: 110px; width: 1700px; height: 872px;
+  border-radius: 32px; overflow: hidden; background: #121314;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 28px 80px 6px rgba(0, 0, 0, 0.55);
+  font-variant-ligatures: none;
+}
+.vsc::after { content: ""; position: absolute; inset: 0; border-radius: 32px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); pointer-events: none; z-index: 60; }
+.vsc-z {
+  position: absolute; top: 0; left: 0; width: var(--vsc-w); height: 436px; transform: scale(2); transform-origin: 0 0;
+  display: flex; flex-direction: column; overflow: hidden;
+  font-family: "VSC UI", -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; font-weight: 400; line-height: 18.2px; letter-spacing: -0.076px; /* SF tracking at 13px (macOS applies it to the system font; a font file does not) */
+  color: var(--vscode-foreground); background: var(--vscode-editor-background);
+}
+.vsc-z, .vsc-z *, .vsc-z *::before, .vsc-z *::after { box-sizing: border-box; }
+.ci { font: 16px/1 codicon; letter-spacing: 0; display: inline-block; text-align: center; -webkit-font-smoothing: antialiased; user-select: none; }
+.fi { font-family: seti; font-size: 19.5px; letter-spacing: 0; display: inline-block; width: 22px; padding-right: 6px; flex: none; -webkit-font-smoothing: antialiased; overflow: visible; }
+
+/* ---- title bar (35) ---- */
+.vsc-titlebar { position: relative; flex: none; height: 35px; z-index: 3; background: var(--vscode-titleBar-activeBackground); color: var(--vscode-titleBar-activeForeground); border-bottom: 1px solid var(--vscode-titleBar-border); } /* the real 0 0 6px shadow is clipped by its grid cell */
+.tb-lights { position: absolute; left: 10px; top: 9px; width: 62px; height: 16px; }
+.tb-act { position: absolute; top: 6px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--vscode-icon-foreground); }
+.tb-act.dis { color: var(--vscode-disabledForeground); }
+.tb-cc { position: absolute; top: 5px; height: 24px; /* left + width: inline, from the window width (vscode-window.mjs titleBar) */ padding-left: 8px; border: 1px solid var(--vscode-commandCenter-border); border-radius: 6px; background: var(--vscode-commandCenter-background); color: var(--vscode-commandCenter-foreground); font-size: 12px; line-height: 22px; white-space: nowrap; overflow: hidden; }
+
+/* ---- body: activity bar | side bar | editor ---- */
+.vsc-body { position: relative; flex: 1; display: flex; min-height: 0; }
+.vsc-activity { position: relative; flex: none; width: 48px; display: flex; flex-direction: column; background: var(--vscode-activityBar-background); }
+.vsc-activity::before { content: ""; position: absolute; top: 0; bottom: 0; left: 47px; width: 1px; background: var(--vscode-activityBar-border); }
+.act { position: relative; flex: none; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font: 24px/24px codicon; letter-spacing: 0; -webkit-font-smoothing: antialiased; color: var(--vscode-activityBar-inactiveForeground); }
+.act.on { color: var(--vscode-activityBar-foreground); background: var(--vscode-activityBar-activeBackground); }
+.act.on::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 2px solid var(--vscode-activityBar-activeBorder); }
+.act-spacer { flex: 1; }
+
+.vsc-sidebar { position: relative; flex: none; width: 200px; display: flex; flex-direction: column; overflow: hidden; background: var(--vscode-sideBar-background); color: var(--vscode-sideBar-foreground); border-right: 1px solid var(--vscode-sideBar-border); }
+.sb-title { flex: none; height: 35px; padding: 0 8px; display: flex; align-items: center; }
+.sb-title h2 { flex: 1; padding-left: 12px; font-size: 11px; font-weight: 400; line-height: 35px; text-transform: uppercase; color: var(--vscode-sideBarTitle-foreground); white-space: nowrap; }
+.sb-btn { flex: none; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--vscode-icon-foreground); }
+.sb-title .sb-btn { margin-right: 4px; }
+.pane-hd { position: relative; flex: none; height: 22px; display: flex; align-items: center; font-size: 11px; font-weight: 700; line-height: 22px; background: var(--vscode-sideBarSectionHeader-background); color: var(--vscode-sideBarSectionHeader-foreground, var(--vscode-sideBar-foreground)); }
+.pane-hd.bt { border-top: 1px solid var(--vscode-sideBarSectionHeader-border); }
+.pane-hd:not(.bt) .tw { position: relative; top: 1px; }
+.pane-hd .tw { flex: none; width: 16px; height: 16px; margin-left: 2px; color: var(--vscode-icon-foreground); }
+.pane-hd .ttl { margin-left: 2px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pane-hd .acts { margin-left: auto; margin-right: 12px; display: none; gap: 4px; }
+.pane-hd .acts .sb-btn { width: 20px; height: 20px; }
+.sb-btn.hov { background: var(--vscode-toolbar-hoverBackground); }
+.pane-hd .desc { margin-left: 6px; font-weight: 400; text-transform: none; opacity: 0.7; white-space: nowrap; }
+.pane-hd.hover .acts { display: flex; }
+.sb-files { position: relative; flex: 1; min-height: 0; }
+.sb-row { position: relative; height: 22px; line-height: 22px; display: flex; align-items: center; padding-left: 8px; white-space: pre; color: var(--vscode-sideBar-foreground); }
+.sb-row .fi { line-height: 22px; height: 22px; }
+.sb-row > div:last-child { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.sb-row.active { background: var(--vscode-list-inactiveSelectionBackground); color: var(--vscode-list-inactiveSelectionForeground); }
+.sb-row.focus { background: var(--vscode-list-activeSelectionBackground); color: var(--vscode-list-activeSelectionForeground); outline: 1px solid var(--vscode-list-focusOutline); outline-offset: -1px; }
+/* inline "new file" name box (explorer input) */
+.sb-input { flex: 1; height: 22px; padding-left: 0; border: 1px solid var(--vscode-input-border); border-radius: 4px; outline: 1px solid var(--vscode-focusBorder); outline-offset: -1px; background: var(--vscode-input-background); color: var(--vscode-input-foreground); line-height: 20px; white-space: pre; overflow: hidden; }
+.cursor.icur { height: 16px; vertical-align: -3px; }
+.cursor.icur::before { width: 1px; height: 16px; background: var(--vscode-input-foreground); }
+
+/* ---- editor group ---- */
+.vsc-editor { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--vscode-editor-background); }
+.vsc-tabs { position: relative; flex: none; height: 35px; display: flex; background: var(--vscode-editorGroupHeader-tabsBackground); }
+.vsc-tabs::after { content: ""; position: absolute; left: 0; right: 0; top: 34px; height: 1px; background: var(--vscode-editorGroupHeader-tabsBorder); z-index: 1; }
+.vsc-tabgroup { display: flex; position: relative; z-index: 2; }
+.vsc-tab { position: relative; flex: none; height: 35px; display: flex; align-items: center; padding-left: 10px; white-space: nowrap; background: var(--vscode-tab-inactiveBackground); color: var(--vscode-tab-inactiveForeground); border-right: 1px solid var(--vscode-tab-border); }
+.vsc-tab .fi { line-height: 35px; height: 35px; }
+.vsc-tab { width: 120px; min-width: fit-content; } /* real: .tab.sizing-fit */
+.vsc-tab .tab-label { flex: 1 1 auto; }
+.vsc-tab .tab-x { flex: none; width: 28px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.vsc-tab .tab-x .ci { width: 20px; height: 20px; padding: 2px; border-radius: 6px; }
+.vsc-tab.vsc-tab-off .tab-x .tx-close { visibility: hidden; } /* close shows on hover only; the unsaved dot always shows */
+.vsc-tab.vsc-tab-on { background: var(--vscode-tab-activeBackground); color: var(--vscode-tab-activeForeground); box-shadow: inset 0 8px 12px rgba(0, 0, 0, 0.02); }
+.vsc-tab.vsc-tab-on::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--vscode-tab-activeBorderTop); z-index: 2; }
+.vsc-tab.vsc-tab-on::after { content: ""; position: absolute; left: 0; right: 0; top: 34px; height: 1px; background: var(--vscode-tab-activeBorder, var(--vscode-tab-activeBackground)); z-index: 2; }
+.ed-acts { position: absolute; right: 0; top: 0; width: 103px; height: 35px; color: var(--vscode-icon-foreground); z-index: 2; }
+.ed-acts .ci { position: absolute; top: 6.5px; width: 22px; height: 22px; padding: 3px; border-radius: 6px; }
+.vsc-runbtn { position: absolute; left: 4px; top: 6.5px; width: 35px; height: 22px; border-radius: 5px; }
+.vsc-runbtn .ci.play { left: 0; top: 0; }
+.vsc-runbtn .ci.drop { left: 19px; top: 0; width: 16px; padding: 3px 2px; font-size: 12px; line-height: 16px; }
+.vsc-breadcrumb { flex: none; height: 22px; display: flex; align-items: center; padding-left: 16px; white-space: nowrap; background: var(--vscode-breadcrumb-background); color: var(--vscode-breadcrumb-foreground); }
+.vsc-breadcrumb .fi { line-height: 22px; height: 22px; }
+.vsc-breadcrumb .ci { width: 16px; height: 16px; }
+.vsc-breadcrumb .bc-dots { padding-right: 8px; }
+
+/* editor text: Menlo 14 / 21, gutter 72 = glyph margin 21 + numbers 25 + folding 26 (13: 20, 69; 12: 18, 66) */
+.vsc-code { position: relative; flex: 1; min-height: 0; overflow: hidden; font-family: "VSC Mono", Menlo, Monaco, monospace; font-size: var(--vsc-fs); font-weight: 400; line-height: var(--vsc-lh); font-feature-settings: "liga" 0, "calt" 0; letter-spacing: 0px; color: var(--vscode-editor-foreground); }
+.code-line { position: relative; display: flex; height: var(--vsc-lh); }
+.gutter { position: relative; flex: none; width: var(--vsc-gut); padding-right: 26px; text-align: right; color: var(--vscode-editorLineNumber-foreground); }
+.code-text { position: relative; flex: 1; min-width: 0; white-space: pre; }
+/* Monaco's scrollable text area starts at the content edge with overflow hidden: glyph ink that leans left of
+   column 1 (Menlo "#") is cut there. (Not clip-path: one per line trips HyperFrames' heavy-overlay limit.) */
+.code-text { overflow: hidden; }
+/* line overlays behind the text: current line (editor.lineHighlightBackground) and the debugger's paused line */
+.lh { position: absolute; left: var(--vsc-gut); right: var(--vsc-mm); top: 0; height: var(--vsc-lh); visibility: hidden; pointer-events: none; }
+.lh-cur { background: var(--vscode-editor-lineHighlightBackground); }
+.lh-dbg { left: 0; background: transparent; }
+.lh-dbg::before { content: ""; position: absolute; left: var(--vsc-gut); right: var(--vsc-mm); top: 0; bottom: 0; background: var(--vscode-editor-stackFrameHighlightBackground); }
+.dbg-arrow { position: absolute; left: var(--vsc-glyph-x); top: 0; width: 16px; font: 16px/var(--vsc-lh) codicon; text-align: center; color: var(--vscode-debugIcon-breakpointCurrentStackframeForeground); -webkit-font-smoothing: antialiased; z-index: 2; }
+.code-line.cur .gutter { color: var(--vscode-editorLineNumber-activeForeground); }
+.code-line.cur .lh-cur { visibility: visible; }
+/* sticky scroll: pinned block headers (editorStickyScroll.*), 1px border + shadow below, under the minimap */
+.vsc-sticky { position: relative; z-index: 3; margin-right: 14px; background: var(--vscode-editorStickyScroll-background, var(--vscode-editor-background)); box-shadow: 0 4px 2px -2px var(--vscode-editorStickyScroll-shadow, var(--vscode-scrollbar-shadow)); }
+.vsc-sticky::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--vscode-editorStickyScroll-border, var(--vscode-editorWidget-border)); }
+.vsc-sticky .gutter { color: var(--vscode-editorLineNumber-foreground); }
+/* a scrolled editor: 6px shadow under the breadcrumbs */
+.vsc-scrolldeco { position: absolute; left: 0; right: 14px; top: 0; height: 6px; z-index: 3; box-shadow: inset 0 6px 6px -6px var(--vscode-scrollbar-shadow); pointer-events: none; }
+.ig { position: absolute; top: 0; height: var(--vsc-lh); width: 1px; background: var(--vscode-editorIndentGuide-background1, var(--vscode-editorIndentGuide-background)); pointer-events: none; }
+.ig.on { background: var(--vscode-editorIndentGuide-activeBackground1, var(--vscode-editorIndentGuide-activeBackground)); }
+.cursor { position: relative; display: inline-block; width: 0; height: var(--vsc-lh); vertical-align: top; visibility: hidden; }
+.cursor::before { content: ""; position: absolute; left: 0; top: 0; width: 2px; height: var(--vsc-lh); background: var(--vscode-editorCursor-foreground); }
+/* no background of its own: the canvas (opacity 0.9) lets 10% of the editor show through, as in the app - the
+   current-line band reaches 14px under the minimap and is just visible there */
+.vsc-minimap { position: absolute; top: 0; right: 14px; bottom: 0; width: var(--vsc-mm); z-index: 4; overflow: hidden; }
+.mmc { display: block; width: var(--vsc-mm); height: 322px; image-rendering: pixelated; opacity: 0.9; } /* real: .monaco-editor .minimap canvas { opacity: 0.9 } */ /* (2 x minimap) x 644 device px canvas, drawn by the page with Monaco's minimap renderer */
+.vsc-ruler { position: absolute; top: 0; right: 0; bottom: 0; width: 14px; z-index: 4; }
+/* measured: a 1-device-px border at half strength, and the cursor mark = editorCursor.foreground at 179/255, 1.7px */
+/* one DEVICE pixel: a 1px element painted on its left half only (a 0.5px element gets rounded up to 1 CSS px);
+   drawn over the cursor mark, as in the app */
+.vsc-ruler::before { content: ""; position: absolute; z-index: 1; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to right, color-mix(in srgb, var(--vscode-editorOverviewRuler-border) 50%, transparent) 50%, transparent 50%); }
+/* measured: starts 1 device px right of the border, a 42.6% top device row then 70% rows, 2 css px tall. Boxes inside
+   the 2x window snap to whole css px, gradients do not - so the half-pixel parts are drawn with gradients */
+.vsc-ruler .rc { position: absolute; left: 0; right: 0; height: 2px; background:
+  linear-gradient(to right, var(--vscode-editor-background) 0.5px, transparent 0.5px),
+  linear-gradient(to bottom, var(--vsc-ruler-cur0) 0.5px, var(--vsc-ruler-cur) 0.5px); } /* exact flat colors from theme-*.css (tools/theme-css.mjs) */
+.vsc-watermark { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.vsc-watermark .lp { width: 256px; height: 256px; background: url("vscode/letterpress-dark.svg") center / contain no-repeat; }
+
+/* ---- panel (terminal) ---- */
+.vsc-terminal { position: relative; flex: none; display: none; flex-direction: column; height: 300px; background: var(--vscode-panel-background); }
+.vsc-terminal.max { position: absolute; left: 0; right: 0; top: 0; bottom: 0; height: auto !important; z-index: 8; } /* Maximize Panel Size */
+.pn-head { position: relative; flex: none; height: 35px; border-top: 1px solid var(--vscode-panel-border); }
+.pn-tabs { position: absolute; left: 8px; top: -0.5px; height: 35px; display: flex; }
+.pn-tab { position: relative; height: 35px; padding: 0 10px; display: flex; align-items: center; font-size: 11px; text-transform: uppercase; color: var(--vscode-panelTitle-inactiveForeground); }
+.pn-tab > span:not(.ci) { display: block; padding: 2px; line-height: 27px; }
+.pn-tab.on { color: var(--vscode-panelTitle-activeForeground); }
+.pn-tab.on::after { content: ""; position: absolute; left: 10px; width: 59.609375px; top: 28px; border-top: 1px solid var(--vscode-panelTitle-activeBorder); } /* the real indicator is the label box, 59.609 wide (measured); ours is 1/64 px wider, so the width is set, not right: 10 (that rounds to 60 px). Edges round like the app's: 420-479 at 850, 539-598 at 920 */
+.pn-tab.more { padding: 0 3px; }
+.pn-tab.more .ci { width: 20px; height: 20px; padding: 2px; color: var(--vscode-panelTitle-activeForeground); }
+.pn-act { position: absolute; top: 6.5px; width: 22px; height: 22px; padding: 3px; border-radius: 6px; color: var(--vscode-icon-foreground); }
+.pn-shell { position: absolute; top: 5.39px; height: 24.2px; padding: 3px; display: flex; align-items: center; border-radius: 6px; font-size: 11px; line-height: 18.2px; color: var(--vscode-panelTitle-activeForeground); }
+.pn-shell .ci { margin-right: 4px; color: var(--vscode-icon-foreground); }
+.pn-act.chev { width: 16px; padding: 3px 0; font: 12px/16px codicon; text-align: center; -webkit-font-smoothing: antialiased; }
+.pn-act.g { top: 6px; }
+.pn-sep { position: absolute; top: 9.5px; width: 1px; height: 16px; border-radius: 6px; background: var(--vscode-disabledForeground); } /* measured: y 158.5 (snaps to 159), rounded ends */
+/* top: inline, from the panel height - xterm sits at the panel's bottom, the leftover above it (vscode-window.mjs termTop) */
+.term-body { position: absolute; left: 0; right: 14px; padding-left: 20px; bottom: 0; overflow: hidden; font-family: "VSC Mono", Menlo, Monaco, monospace; font-size: var(--vsc-tfs); line-height: var(--vsc-trow); letter-spacing: var(--vsc-tls); font-feature-settings: "liga" 0, "calt" 0; color: var(--vscode-terminal-foreground); }
+/* xterm wraps a row at its column count (67 = (602 - 20 - 14) / 8.4375 cells): program output is pre-wrapped by
+   the build at exactly that count, and a long typed command wraps here at the same width */
+.term-line { position: relative; white-space: break-spaces; line-break: anywhere; max-width: var(--vsc-tmax); min-height: var(--vsc-trow); }
+.t-c0 { display: inline-block; width: var(--vsc-tcell); } /* measured: xterm cell width; the prompt's first char sits in its own cell span */
+/* the terminal's own overview ruler: 1 device-px border, a mark per command (blue = done, gray = current prompt) */
+.term-ruler { position: absolute; right: 0; bottom: 0; width: 14px; overflow: hidden; } /* top: inline, as .term-body */
+.term-ruler::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to right, var(--vscode-editorOverviewRuler-border) 50%, transparent 50%); }
+.term-ruler::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(to bottom, var(--vscode-editorOverviewRuler-border) 50%, transparent 50%); }
+/* measured: 1 device px right of the ruler border, 4.5px wide - drawn with a gradient (boxes snap to whole css px) */
+.trm { position: absolute; left: 0; width: 5px; height: 12px; z-index: 1; background: linear-gradient(to right, transparent 0.5px, var(--trm-c) 0.5px); }
+.trm.ok { --trm-c: var(--vscode-terminalCommandDecoration-successBackground); }
+.trm.err { --trm-c: var(--vscode-terminalCommandDecoration-errorBackground); }
+.trm.run { --trm-c: var(--vsc-trm-run, var(--vscode-terminalCommandDecoration-defaultBackground)); } /* flat, from theme-*.css */
+.t-prompt { color: inherit; }
+/* shell-integration dot: 16px box, line-height = the xterm row (measured: 14 at terminal 12, 16 at 14) */
+.t-dec { position: absolute; left: -17px; top: 0; width: 16px; height: 16px; font: 16px/var(--vsc-trow) codicon; text-align: center; -webkit-font-smoothing: antialiased; }
+.t-dec.run { color: var(--vscode-terminalCommandDecoration-defaultBackground); }
+.t-dec.ok { color: var(--vscode-terminalCommandDecoration-successBackground); }
+.t-dec.err { color: var(--vscode-terminalCommandDecoration-errorBackground); }
+.cursor.tcur { width: var(--vsc-tcur); height: var(--vsc-trow); vertical-align: top; background: var(--vscode-terminalCursor-foreground); }
+.cursor.tcur::before { display: none; }
+
+/* ---- status bar (22) ---- */
+.vsc-status { position: relative; flex: none; height: 22px; font-variant-numeric: tabular-nums; display: flex; justify-content: space-between; font-size: 12px; line-height: 22px; white-space: pre; background: var(--vscode-statusBar-background); color: var(--vscode-statusBar-foreground); }
+.vsc-status::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--vscode-statusBar-border); }
+.st-left, .st-right { display: flex; height: 22px; }
+.st-item { height: 22px; display: flex; align-items: center; margin: 0 3px; padding: 0 5px; white-space: pre; }
+.st-item .ci { width: 16px; height: 16px; }
+.st-left > .st-item:first-child { margin: 0 0 0 2px; padding: 0 8px; }
+.st-right > .st-item:last-child { margin: 0 2px 0 0; padding: 0 8px; }
+.st-full { display: contents; }
+.st-item.compact-r { margin: 0 0 0 5px; padding: 0 3px; }
+.st-item.compact-l { margin: 0 5px 0 0; padding: 0 3px; }
+
+/* ---- VARIABLES pane (trace / shell memory): styled as the real debugger's Variables view (mac: Menlo 11) ---- */
+.dv-panel { flex: none; display: flex; flex-direction: column; padding-bottom: 4px; }
+.dv-scope { height: 22px; line-height: 22px; display: flex; align-items: center; padding-left: 8px; white-space: nowrap; }
+.dv-scope .tw { width: 16px; height: 16px; margin-right: 6px; color: var(--vscode-icon-foreground); }
+.dv-row { height: 22px; line-height: 22px; display: flex; align-items: center; padding-left: 30px; padding-right: 8px; font-family: "VSC Mono", Menlo, Monaco, monospace; font-size: var(--dvfs, 11px); white-space: pre; overflow: hidden; }
+.dv-child { padding-left: 38px; }
+.dv-name { color: var(--vscode-debugTokenExpression-name); }
+.dv-colon { color: var(--vscode-foreground); }
+.dv-cell { position: relative; display: inline-grid; grid-template-columns: minmax(0, auto); justify-items: start; margin-left: 6px; border-radius: 4px; flex: 0 1 auto; min-width: 0; }
+/* a long value ends in "…" like the real pane (EDITOR m07 round 5 m3: values were cut mid-glyph) */
+.dv-cell > .dv-val { grid-area: 1 / 1; min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: pre; }
+.dv-num { color: var(--vscode-debugTokenExpression-number); }
+.dv-str { color: var(--vscode-debugTokenExpression-string); }
+.dv-true, .dv-false { color: var(--vscode-debugTokenExpression-boolean); }
+
+/* SF tracking by size (Apple's table, measured against the real app): 11px +0.065, 12px 0, 13px -0.076 */
+.sb-title h2, .pane-hd, .pn-tab, .pn-shell { letter-spacing: 0.065px; }
+.tb-cc, .vsc-status { letter-spacing: 0; }
+.vsc-code, .mm-line, .dv-row { letter-spacing: 0; }
+/* HyperFrames injects "html,body,*{text-rendering:geometricPrecision}" into every page, which on macOS turns off
+   the font smoothing the real app draws with (text came out 12% thinner). The real app uses the default. */
+.vsc-z, .vsc-z * { text-rendering: auto; }
+
+/* the macOS arrow pointer (NSCursor.arrow, 28x40pt, hot spot 5,5) for mouse moments; macOS hides it while typing */
+.vsc-pointer { position: absolute; left: -5px; top: -5px; width: 28px; height: 40px; z-index: 55; pointer-events: none; visibility: hidden; }
+
+/* "N unsaved files" badge on the Explorer icon (measured: 16x16 at 24,24 in the 48px cell, 9px/600, #307e9f) */
+.act-badge { position: absolute; left: 24px; top: 24px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 20px; font: 600 9px/16px "VSC UI", -apple-system, sans-serif; letter-spacing: 0; text-align: center; color: var(--vscode-activityBarBadge-foreground); background: var(--vscode-activityBarBadge-background); }
+/* a box AROUND the minimap's code (redbox target "minimap"), so the ring never covers what it points at */
+.mm-mark { position: absolute; right: 15px; top: 54px; width: calc(var(--vsc-mm) + 2px); height: 20px; border-radius: 3px; pointer-events: none; z-index: 6; } /* right edge stops 1px short of the overview ruler (EDITOR round 5: it covered the ruler cursor mark) */
+/* The app draws the title-bar layout controls and the Manage gear in their own compositing layers (glyph edges
+   round differently, +-1/255, when a glyph is blended in a transparent layer first). Same here: bit-exact.
+   will-change: OPACITY, never transform: a transform hint freezes the layer at the raster scale it was first drawn
+   at, and every scene is first drawn pre-scaled for its entrance (0.55x) - the icons came out blurred in the video
+   (EDITOR round 6). An opacity layer is re-rastered at the current scale (zoom entrances, the 0.74x pause shrink). */
+.tb-lay, .act-gear { will-change: opacity; }
+/* xterm's text rows live in their own (transparent) compositing layer in the app, which rounds glyph edges
+   differently; giving .term-body a layer reproduces it bit for bit (opacity hint: see above) */
+.term-body { will-change: opacity; }
