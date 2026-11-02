@@ -1,6 +1,6 @@
 # claude-skills
 
-A growing collection of [Claude Code](https://www.anthropic.com/news/claude-code) skills built by [Randy Michak](https://github.com/rmichak). Each skill is a self-contained directory with a `SKILL.md` (and sometimes supporting scripts or references) that Claude can invoke when its description matches what you're trying to do.
+A growing collection of [Claude Code](https://www.anthropic.com/news/claude-code) skills built or adapted by [Randy Michak](https://github.com/rmichak) (adapted skills credit their source below). Each skill is a self-contained directory with a `SKILL.md` (and sometimes supporting scripts or references) that Claude can invoke when its description matches what you're trying to do.
 
 ## What's a skill?
 
@@ -42,6 +42,7 @@ Claude's default is to agree with you; /roast is the opposite. It convenes a cou
 
 - **Triggers:** "/roast \<idea\>", "roast this idea", "pressure-test this", "convene the council", "validate this business idea"
 - **Requirements:** none — self-contained, uses only built-in Claude Code agents
+- **Credit:** Adapted from the `/roast` idea-council skill by [Nate Herk](https://x.com/nateherk), introduced in his video [*I asked Claude Code to make me as much money as possible*](https://youtube.com/watch?v=iTY8Q449YNQ) (June 2026) and shared through his AI Automation Society community. The council personas, Judge verdict, and 48-hour test are his design.
 
 ### [`storm-research`](./storm-research/) — Multi-perspective, citation-verified research briefings
 
