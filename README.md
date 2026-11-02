@@ -28,6 +28,7 @@ For instructors grading written work. Reads student prose submissions (essays, r
 Edits text to remove patterns that mark it as AI-generated: inflated symbolism, em dash overuse, rule-of-three abuse, AI vocabulary words, "it's not X, it's Y" negation, throat-clearing openers, and ~25 other documented tells. Based on Wikipedia's [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) guide. Includes a "VOICE PROFILE" section you can customize so the humanized output sounds like *you*, not like generic clean prose.
 
 - **Triggers:** "humanize this", "make this sound less like AI", "remove AI tells from this draft"
+- **Credit:** Adapted from [blader/humanizer](https://github.com/blader/humanizer) by Siqi Chen (MIT). The pattern catalog is his; this version adds a customizable voice profile. His license is included at [`humanizer/LICENSE`](./humanizer/LICENSE).
 
 ### [`seo-audit`](./seo-audit/) — Comprehensive SEO site audit
 
@@ -51,6 +52,7 @@ Turns one topic into a verified HTML briefing using a STORM-style pipeline: five
 - **Triggers:** "storm research this", "storm report on X", "give me a STORM briefing on X"
 - **Requirements:** none — self-contained, uses built-in agents plus the bundled `report-template.html`
 - **Best for:** topics where multiple viewpoints and fact-checked claims matter; overkill for a simple factual lookup
+- **Credit:** The multi-perspective approach is inspired by [STORM](https://github.com/stanford-oval/storm) from Stanford OVAL. This skill is an independent Claude Code take on the idea and contains no STORM code.
 
 ## Installation
 

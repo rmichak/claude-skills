@@ -99,7 +99,7 @@ Save reports to `./ai-review/[original-filename]-review.md` next to where the su
 
 ## Tone and framing
 
-The instructor (Randy) uses these reports to make decisions about real students. Two things follow:
+The instructor uses these reports to make decisions about real students. Two things follow:
 
 - **Quote, don't paraphrase, when citing signals.** The instructor needs to see the actual prose to make their own judgment. Saying "the conclusion uses generic AI phrasing" is useless; quoting the conclusion is useful.
 - **Don't bury the lede.** If the assessment is "Low concern," say so in the first paragraph so the instructor doesn't have to read the whole report to find out the submission is fine.
